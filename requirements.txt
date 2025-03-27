@@ -1,0 +1,6 @@
+flask==2.3.3
+python-dotenv==1.0.0
+flask-bcrypt
+flask-login
+flask-sqlalchemy
+pytz

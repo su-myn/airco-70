@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PropertyHub{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block additional_styles %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <h1>PropertyHub</h1>
+        <div class="navbar-links">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="navbar-link">Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="logout-btn">Sign Out</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="navbar-link">Sign In</a>
+                <a href="{{ url_for('register') }}" class="navbar-link">Register</a>
+            {% endif %}
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <div class="mobile-menu">
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('logout') }}">Sign Out</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Sign In</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+    </div>
+
+    <div class="flash-messages">
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+            <div class="flash-message flash-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            mobileMenu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

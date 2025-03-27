@@ -1,0 +1,21 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Add New Company{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+    <h2>Add New Company</h2>
+
+    <form method="post" class="admin-form">
+        <div class="form-group">
+            <label for="name">Company Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="admin-btn">Add Company</button>
+            <a href="{{ url_for('admin_companies') }}" class="admin-btn secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
