@@ -14,7 +14,12 @@ from icalendar import Calendar
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///propertyhub.db'
+import os
+database_url = os.environ.get('DATABASE_URL')
+# Fix for 'postgres://' vs 'postgresql://' issue in Heroku
+if database_url and database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///propertyhub.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -1358,6 +1363,11 @@ def admin_replacements():
 
 # Function to create default roles and a default company
 def create_default_data():
+    # Check if admin user already exists
+    admin_user = User.query.filter_by(email='admin@example.com').first()
+    if admin_user:
+        print("Admin user already exists, skipping default data creation")
+        return
 
     admin_user = User.query.filter_by(email='admin@example.com').first()
     if not admin_user:
